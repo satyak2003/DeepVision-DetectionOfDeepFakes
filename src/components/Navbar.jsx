@@ -8,9 +8,17 @@ function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold text-white hover:text-gray-300 transition-colors">
+             <Link to="/" className="flex items-center space-x-3">
+              <img
+                src="/DV_logo.png"
+                alt="DeepVision Logo"
+                className="h-10 w-auto"
+                loading="lazy"
+              />
+              <span className="text-2xl font-bold text-white hover:text-gray-300 transition-colors select-none">
                 DeepVision
-              </Link>
+              </span>
+            </Link>
             </div>
           </div>
           <div className="flex items-center space-x-4">

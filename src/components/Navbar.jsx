@@ -9,19 +9,22 @@ function Navbar() {
           <div className="flex items-center">
             <div className="flex-shrink-0">
              <Link to="/" className="flex items-center space-x-3">
-              <img
-                src="/DV_logo.png"
-                alt="DeepVision Logo"
-                className="h-10 w-auto"
-                loading="lazy"
-              />
-              <span className="text-2xl font-bold text-white hover:text-gray-300 transition-colors select-none">
-                DeepVision
-              </span>
-            </Link>
+               <img
+                 src="/DV_logo.png"
+                 alt="DeepVision Logo"
+                 className="h-10 w-auto"
+                 loading="lazy"
+               />
+               <span className="text-2xl font-bold text-white hover:text-gray-300 transition-colors select-none">
+                 DeepVision
+               </span>
+             </Link>
             </div>
           </div>
           <div className="flex items-center space-x-4">
+            <Link to="/about" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              About
+            </Link>
             <Link to="/login" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
               Login
             </Link>

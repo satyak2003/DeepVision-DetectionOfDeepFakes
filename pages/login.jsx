@@ -16,44 +16,72 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen justify-center items-center bg-slate-900">
-      <div className="min-w-96 p-10 justify-center rounded-2xl bg-slate-800">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+    <div className="flex min-h-screen justify-center items-center bg-gradient-to-r from-slate-900 via-gray-900 to-slate-900 px-4">
+      <div className="w-full max-w-md bg-slate-800 rounded-3xl shadow-lg p-8 space-y-6">
+        <h2 className="text-center text-3xl font-extrabold text-white tracking-wide">
+          Log In to DeepVision
+        </h2>
+
         {error && (
-          <div className="mb-4 text-red-500 text-sm">{error}</div>
+          <div className="rounded-md bg-red-100 border border-red-400 text-red-700 px-4 py-3 text-sm">
+            {error}
+          </div>
         )}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block mb-2 text-sm font-medium text-white">
-              Email
+
+        <form className="space-y-5" onSubmit={handleSubmit}>
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-300 mb-2"
+            >
+              Email Address
             </label>
             <input
+              id="email"
               type="email"
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full rounded-md bg-slate-700 border border-gray-600 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              autoComplete="email"
             />
           </div>
-          <div className="mb-6">
-            <label className="block mb-2 text-sm font-medium text-white">
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-300 mb-2"
+            >
               Password
             </label>
             <input
+              id="password"
               type="password"
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full rounded-md bg-slate-700 border border-gray-600 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
+              autoComplete="current-password"
             />
           </div>
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 hover:bg-blue-700 rounded-md py-3 text-white font-semibold transition duration-300"
           >
             Log In
           </button>
         </form>
+
+        <p className="text-center text-gray-400 text-sm mt-4">
+          Don’t have an account?{" "}
+          <a
+            href="/register"
+            className="text-blue-500 hover:underline font-semibold"
+          >
+            Register here
+          </a>
+        </p>
       </div>
     </div>
   );

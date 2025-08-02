@@ -14,116 +14,99 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // You can add validation here if needed
     setMessage("Registration successful!");
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#0a192f",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <div className="flex min-h-screen justify-center items-center bg-gradient-to-r from-slate-900 via-gray-900 to-slate-900 px-4">
       <form
         onSubmit={handleSubmit}
-        style={{
-          background: "#fff",
-          padding: "2rem",
-          borderRadius: "10px",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.2)",
-          width: "100%",
-          maxWidth: "400px",
-        }}
+        className="w-full max-w-md mt-10 bg-slate-800 rounded-3xl shadow-lg p-8 space-y-6"
       >
-        <h2
-          style={{
-            textAlign: "center",
-            color: "#2563eb",
-            marginBottom: "1.5rem",
-          }}
-        >
-          Register
+        <h2 className="text-center text-3xl font-extrabold text-white tracking-wide">
+          Create your account
         </h2>
-        <div style={{ marginBottom: "1rem" }}>
-          <label style={{ color: "#0a192f" }}>Username:</label>
+
+        <div>
+          <label
+            htmlFor="username"
+            className="block text-sm font-medium text-gray-300 mb-2"
+          >
+            Username
+          </label>
           <input
-            type="text"
+            id="username"
             name="username"
+            type="text"
             value={form.username}
             onChange={handleChange}
             required
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: "5px",
-              border: "1px solid #2563eb",
-              marginTop: "0.25rem",
-            }}
+            placeholder="Enter your username"
+            className="w-full rounded-md bg-slate-700 border border-gray-600 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <label style={{ color: "#0a192f" }}>Email:</label>
+
+        <div>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-300 mb-2"
+          >
+            Email Address
+          </label>
           <input
-            type="email"
+            id="email"
             name="email"
+            type="email"
             value={form.email}
             onChange={handleChange}
             required
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: "5px",
-              border: "1px solid #2563eb",
-              marginTop: "0.25rem",
-            }}
+            placeholder="you@example.com"
+            className="w-full rounded-md bg-slate-700 border border-gray-600 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
-        <div style={{ marginBottom: "1rem" }}>
-          <label style={{ color: "#0a192f" }}>Password:</label>
+
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-300 mb-2"
+          >
+            Password
+          </label>
           <input
-            type="password"
+            id="password"
             name="password"
+            type="password"
             value={form.password}
             onChange={handleChange}
             required
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: "5px",
-              border: "1px solid #2563eb",
-              marginTop: "0.25rem",
-            }}
+            placeholder="Enter your password"
+            className="w-full rounded-md bg-slate-700 border border-gray-600 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
+
         <button
           type="submit"
-          style={{
-            width: "100%",
-            padding: "0.75rem",
-            background: "#2563eb",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
+          className="w-full bg-blue-600 hover:bg-blue-700 rounded-md py-3 text-white font-semibold transition duration-300"
         >
           Register
         </button>
+
         {message && (
-          <p
-            style={{
-              marginTop: "1rem",
-              color: "green",
-              textAlign: "center",
-            }}
-          >
+          <p className="mt-4 text-green-400 text-center text-sm font-medium">
             {message}
           </p>
         )}
+
+        <p className="text-center text-gray-400 text-sm mt-4">
+          Already have an account?{" "}
+          <a
+            href="/login"
+            className="text-blue-500 hover:underline font-semibold"
+          >
+            Log in here
+          </a>
+        </p>
       </form>
     </div>
   );

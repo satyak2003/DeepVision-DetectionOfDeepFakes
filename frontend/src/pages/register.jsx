@@ -1,4 +1,8 @@
+// src/pages/register.jsx
 import React, { useState } from "react";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../firebase";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -6,16 +10,37 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError("");
+    setMessage("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can add validation here if needed
-    setMessage("Registration successful!");
+    setError("");
+    setMessage("");
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        form.email,
+        form.password
+      );
+
+      // Update user profile with username
+      await updateProfile(userCredential.user, {
+        displayName: form.username,
+      });
+
+      setMessage("Registration successful! You can now log in.");
+      setForm({ username: "", email: "", password: "" });
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -28,11 +53,20 @@ const Register = () => {
           Create your account
         </h2>
 
+        {error && (
+          <div className="rounded-md bg-red-100 border border-red-400 text-red-700 px-4 py-3 text-sm">
+            {error}
+          </div>
+        )}
+
+        {message && (
+          <div className="rounded-md bg-green-100 border border-green-400 text-green-700 px-4 py-3 text-sm">
+            {message}
+          </div>
+        )}
+
         <div>
-          <label
-            htmlFor="username"
-            className="block text-sm font-medium text-gray-300 mb-2"
-          >
+          <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
             Username
           </label>
           <input
@@ -48,10 +82,7 @@ const Register = () => {
         </div>
 
         <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-300 mb-2"
-          >
+          <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
             Email Address
           </label>
           <input
@@ -67,10 +98,7 @@ const Register = () => {
         </div>
 
         <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-300 mb-2"
-          >
+          <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
             Password
           </label>
           <input
@@ -92,20 +120,11 @@ const Register = () => {
           Register
         </button>
 
-        {message && (
-          <p className="mt-4 text-green-400 text-center text-sm font-medium">
-            {message}
-          </p>
-        )}
-
         <p className="text-center text-gray-400 text-sm mt-4">
           Already have an account?{" "}
-          <a
-            href="/login"
-            className="text-blue-500 hover:underline font-semibold"
-          >
+          <Link to="/login" className="text-blue-500 hover:underline font-semibold">
             Log in here
-          </a>
+          </Link>
         </p>
       </form>
     </div>

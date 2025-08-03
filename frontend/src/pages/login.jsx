@@ -1,18 +1,30 @@
+// src/pages/login.jsx
 import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     if (!email || !password) {
       setError("Please enter both email and password");
       return;
     }
-    setError("");
-    alert(`Logged in with ${email}`);
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/"); // redirect on successful login
+    } catch (err) {
+      setError("Invalid email or password");
+    }
   };
 
   return (
@@ -30,10 +42,7 @@ const Login = () => {
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-300 mb-2"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
               Email Address
             </label>
             <input
@@ -48,10 +57,7 @@ const Login = () => {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-300 mb-2"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
               Password
             </label>
             <input
@@ -75,12 +81,9 @@ const Login = () => {
 
         <p className="text-center text-gray-400 text-sm mt-4">
           Don’t have an account?{" "}
-          <a
-            href="/register"
-            className="text-blue-500 hover:underline font-semibold"
-          >
+          <Link to="/register" className="text-blue-500 hover:underline font-semibold">
             Register here
-          </a>
+          </Link>
         </p>
       </div>
     </div>

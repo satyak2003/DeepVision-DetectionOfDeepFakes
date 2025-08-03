@@ -86,29 +86,30 @@ const Home = () => {
           </p>
         </Link>
 
-        <Link
-          to="/settings"
-          className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 flex flex-col items-center space-y-4"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-12 w-12 text-yellow-600 dark:text-yellow-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8v4l3 3m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
-          <p className="text-gray-600 dark:text-gray-400 text-center">
-            Manage your account and preferences.
-          </p>
-        </Link>
+       <Link
+  to="/about"
+  className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 flex flex-col items-center space-y-4"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-12 w-12 text-yellow-600 dark:text-yellow-400"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M13 16h-1v-4h-1m1-4h.01M12 18a6 6 0 100-12 6 6 0 000 12z"
+    />
+  </svg>
+  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">About</h2>
+  <p className="text-gray-600 dark:text-gray-400 text-center">
+    Learn more about Deepfake Detector and the team.
+  </p>
+</Link>
+
       </main>
     </div>
   );

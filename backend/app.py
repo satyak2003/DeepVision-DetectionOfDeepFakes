@@ -30,7 +30,6 @@ def predict():
         return jsonify({'error': str(e)}), 500
 
 
-# You can add more endpoints here for login, register, etc.
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

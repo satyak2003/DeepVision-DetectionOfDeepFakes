@@ -4,7 +4,7 @@ import { CloudArrowUpIcon, InformationCircleIcon } from "@heroicons/react/24/out
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
-  const [aiDetected, setAiDetected] = useState(null); // null = no check yet, true/false = result
+  const [aiDetected, setAiDetected] = useState(" ");
   const [dragActive, setDragActive] = useState(false);
 
   const inputRef = useRef(null);
@@ -48,15 +48,45 @@ const Upload = () => {
     }
   }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (!selectedFile) return;
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   if (!selectedFile) return;
 
-    // Simulate processing and detection result - replace with actual API call
-    // Here, randomly set AI detected or not for demonstration:
-    const detected = Math.random() < 0.5;
-    setAiDetected(detected);
-  };
+  //   const detected = Math.random() < 0.5;
+  //   setAiDetected(detected);
+  // };
+
+
+  const handleSubmit = async (event) => {
+  event.preventDefault();
+  if (!selectedFile) return;
+
+  const formData = new FormData();
+  formData.append('image', selectedFile);
+
+  try {
+    const response = await fetch('http://localhost:5000/api/predict', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get prediction');
+    }
+
+    const data = await response.json();
+
+    setAiDetected(data.prediction === 'Deepfake');
+    setDetectionResult(data.prediction);
+
+  } catch (error) {
+    console.error('Error:', error);
+    setAiDetected(null);
+    setDetectionResult(error.message);
+  }
+};
+
+
 
   return (
     <div className="flex min-h-screen justify-center px-4 pt-[80px] pb-12 bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 items-start">

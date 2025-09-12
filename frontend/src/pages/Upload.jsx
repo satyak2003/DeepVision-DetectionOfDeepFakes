@@ -4,8 +4,9 @@ import { CloudArrowUpIcon, InformationCircleIcon } from "@heroicons/react/24/out
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
-  const [aiDetected, setAiDetected] = useState(" ");
+  const [aiDetected, setAiDetected] = useState(null); // Should start as null
   const [dragActive, setDragActive] = useState(false);
+  const [detectionResult, setDetectionResult] = useState(''); // For backend result text
 
   const inputRef = useRef(null);
 
@@ -13,6 +14,7 @@ const Upload = () => {
     setSelectedFile(null);
     setPreviewURL(null);
     setAiDetected(null);
+    setDetectionResult(''); // Reset the result as well
   };
 
   const handleFileChange = (event) => {
@@ -25,6 +27,7 @@ const Upload = () => {
       setSelectedFile(file);
       setPreviewURL(URL.createObjectURL(file));
       setAiDetected(null);
+      setDetectionResult('');
     } else {
       resetState();
       alert("Please select a valid image file.");
@@ -48,45 +51,36 @@ const Upload = () => {
     }
   }, []);
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   if (!selectedFile) return;
-
-  //   const detected = Math.random() < 0.5;
-  //   setAiDetected(detected);
-  // };
-
-
+  // SUBMIT HANDLER: Sends image to Python backend and sets result
   const handleSubmit = async (event) => {
-  event.preventDefault();
-  if (!selectedFile) return;
+    event.preventDefault();
+    if (!selectedFile) return;
 
-  const formData = new FormData();
-  formData.append('image', selectedFile);
+    const formData = new FormData();
+    formData.append('image', selectedFile);
 
-  try {
-    const response = await fetch('http://localhost:5000/api/predict', {
-      method: 'POST',
-      body: formData
-    });
+    try {
+      const response = await fetch('http://localhost:5000/api/predict', {
+        method: 'POST',
+        body: formData
+      });
 
-    if (!response.ok) {
-      throw new Error('Failed to get prediction');
+      if (!response.ok) {
+        throw new Error('Failed to get prediction');
+      }
+
+      const data = await response.json();
+
+      // The backend returns {prediction: 'Deepfake'} or {prediction: 'Real'}
+      setDetectionResult(data.prediction); // Show label, e.g. Deepfake/Real
+      setAiDetected(data.prediction === 'Deepfake' ? true : false);
+
+    } catch (error) {
+      setAiDetected(null);
+      setDetectionResult(error.message);
+      console.error('Error:', error);
     }
-
-    const data = await response.json();
-
-    setAiDetected(data.prediction === 'Deepfake');
-    setDetectionResult(data.prediction);
-
-  } catch (error) {
-    console.error('Error:', error);
-    setAiDetected(null);
-    setDetectionResult(error.message);
-  }
-};
-
-
+  };
 
   return (
     <div className="flex min-h-screen justify-center px-4 pt-[80px] pb-12 bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 items-start">
@@ -171,18 +165,32 @@ const Upload = () => {
         </form>
 
         {/* AI Detection Result */}
-        {aiDetected !== null && (
+        {(aiDetected !== null || detectionResult) && (
           <div
             className={`mt-8 rounded-lg border px-6 py-5 text-center text-white font-semibold drop-shadow-md
-              ${aiDetected ? "bg-red-600 border-red-700" : "bg-green-600 border-green-700"}
+              ${
+                aiDetected === true
+                  ? "bg-red-600 border-red-700"
+                  : aiDetected === false
+                  ? "bg-green-600 border-green-700"
+                  : "bg-yellow-600 border-yellow-700"
+              }
             `}
             role="alert"
             aria-live="polite"
           >
             <InformationCircleIcon className="inline h-6 w-6 mr-2 align-middle" />
-            {aiDetected
+            {aiDetected === true
               ? "Warning: The uploaded image is detected as AI-generated."
-              : "The uploaded image appears to be genuine."}
+              : aiDetected === false
+              ? "The uploaded image appears to be genuine."
+              : "No result yet."}
+            {/* Show detailed backend result */}
+            {detectionResult && (
+              <div className="mt-2 text-indigo-100 text-base font-normal">
+                <strong>Model Prediction:</strong> {detectionResult}
+              </div>
+            )}
           </div>
         )}
 

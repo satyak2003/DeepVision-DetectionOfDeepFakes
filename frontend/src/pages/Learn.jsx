@@ -10,7 +10,7 @@ const Learn = () => {
   }
 
   return (
-    <div className="flex items-start justify-center min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 px-4 pt-[80px] pb-12">
+    <div className="flex items-start justify-center min-h-screen bg-gradient-to-br from-blue-950 to-slate-900 px-4 pt-[80px] pb-12">
       <div className="bg-white/20 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-4xl border border-white/10">
         <h1 className="text-4xl font-extrabold mb-6 text-center text-white tracking-wide drop-shadow">
           Understanding Deepfake Detection with CNNs

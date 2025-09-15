@@ -86,7 +86,7 @@ const Demo = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 px-4 pt-[80px] pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-950 to-slate-900 px-4 pt-[80px] pb-12">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-extrabold text-white mb-4 tracking-wide drop-shadow">

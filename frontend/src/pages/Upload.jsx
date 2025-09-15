@@ -83,14 +83,14 @@ const Upload = () => {
   };
 
   return (
-    <div className="flex min-h-screen justify-center px-4 pt-[80px] pb-12 bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 items-start">
+    <div className="flex min-h-screen justify-center px-4 pt-[80px] pb-12 bg-gradient-to-br from-blue-950 to-slate-900 items-start">
       <div className="w-full max-w-xl rounded-3xl border border-white/10 bg-white/20 p-10 shadow-2xl backdrop-blur-md">
         <header className="mb-6 text-center">
           <h2 className="flex items-center justify-center text-3xl font-extrabold tracking-wide text-white drop-shadow">
-            <CloudArrowUpIcon className="h-8 w-8 mr-2 text-indigo-400" />
+            <CloudArrowUpIcon className="h-8 w-8 mr-2 text-deep-blue" />
             Deepfake Image Detector
           </h2>
-          <p className="mt-2 text-indigo-200 font-medium">
+          <p className="mt-2 text-gray-400 font-medium">
             Upload an image to check if it’s AI-generated or not!
           </p>
         </header>
@@ -119,7 +119,7 @@ const Upload = () => {
               className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
               aria-describedby="fileUploadDescription"
             />
-            <CloudArrowUpIcon className="mx-auto mb-4 h-12 w-12 text-indigo-400" aria-hidden="true" />
+            <CloudArrowUpIcon className="mx-auto mb-4 h-12 w-12 text-deep-blue" aria-hidden="true" />
             <p className="text-indigo-200 font-semibold">
               Drag and drop an image here, or <span className="text-blue-300 underline">browse files</span>
             </p>

@@ -65,45 +65,54 @@ Make sure you have the following installed on your system:
 ### Installation
 
 • Clone the repository:
-
-  `git clone git@github.com:satyak2003/DeepVision-DetectionOfDeepFakes.git`
-  
-  `cd deepfake-detection`
-
+```
+  git clone git@github.com:satyak2003/DeepVision-DetectionOfDeepFakes.git
+  cd deepfake-detection
+ ```
 • Backend Setup (Flask & CNN):
 # Navigate to the backend directory
-`cd backend`
+```
+cd backend
+```
 # Create and activate a virtual environment
-`python -m venv venv`
+```
+python -m venv venv
 
-`source venv/bin/activate`  
+source venv/bin/activate
+
 # On Windows, use 
 
-`venv\Scripts\activate`
-
+venv\Scripts\activate
+```
 # Install Python dependencies
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
 
 # Download the pre-trained model weights (if necessary) and place them in the 'model' directory.
-
+```
 • Frontend Setup (React):
 # Navigate to the frontend directory from the root
-`cd ../frontend`
-
+```
+cd ../frontend
+```
 # Install NPM packages
-`npm install`
+```
+npm install
+```
 
 ## 🏃 Usage
 • Run the Backend Server:
 - From the /backend directory, with your virtual environment activated, run:
-`flask run`
+```
+flask run
+```
 - The API server will start on http://127.0.0.1:5000.
 
 • Run the Frontend Application:
 - From the /frontend directory, run:
-
-`npm start`
-
+```
+npm start
+```
 - The React app will open automatically in your browser at http://localhost:3000.
 - 
 • Detect a DeepFake:

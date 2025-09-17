@@ -67,7 +67,7 @@ Make sure you have the following installed on your system:
 • Clone the repository:
 ```
   git clone git@github.com:satyak2003/DeepVision-DetectionOfDeepFakes.git
-  cd deepfake-detection
+  cd DeepVision-DetectionOfDeepFakes
  ```
 • Backend Setup (Flask & CNN):
 # Navigate to the backend directory

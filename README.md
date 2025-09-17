@@ -24,7 +24,7 @@ This project is built with a modern, full-stack architecture:
 - React: A JavaScript library for building user interfaces.
 - TailwindCSS: A utility-first CSS framework for rapid UI development.
 
-•Backend:
+• Backend:
 
 - Flask: A lightweight Python web framework for the REST API.
 - Python: Core language for backend logic and model inference.
@@ -66,15 +66,20 @@ Make sure you have the following installed on your system:
 
 • Clone the repository:
 
-`git clone https://github.com/your-username/deepfake-detection.git`
-`cd deepfake-detection`
+  `git clone git@github.com:satyak2003/DeepVision-DetectionOfDeepFakes.git`
+  
+  `cd deepfake-detection`
 
 • Backend Setup (Flask & CNN):
 # Navigate to the backend directory
 `cd backend`
 # Create and activate a virtual environment
 `python -m venv venv`
-`source venv/bin/activate`  # On Windows, use `venv\Scripts\activate`
+
+`source venv/bin/activate`  
+# On Windows, use 
+
+`venv\Scripts\activate`
 
 # Install Python dependencies
 `pip install -r requirements.txt`

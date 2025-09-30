@@ -71,8 +71,7 @@ const Upload = () => {
 
       const data = await response.json();
 
-      // The backend returns {prediction: 'Deepfake'} or {prediction: 'Real'}
-      setDetectionResult(data.prediction); // Show label, e.g. Deepfake/Real
+      setDetectionResult(data.prediction);
       setAiDetected(data.prediction === 'Deepfake' ? true : false);
 
     } catch (error) {

@@ -60,7 +60,7 @@ const Upload = () => {
     formData.append('image', selectedFile);
 
     try {
-      const response = await fetch('http://localhost:5000/api/predict', {
+      const response = await fetch('http://deep-vision.app/api/predict', {
         method: 'POST',
         body: formData
       });

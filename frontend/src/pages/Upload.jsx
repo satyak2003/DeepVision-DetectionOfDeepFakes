@@ -1,6 +1,9 @@
 import React, { useState, useCallback, useRef } from "react";
 import { CloudArrowUpIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 
+const API_ENDPOINT = `${import.meta.env.VITE_API_BASE_URL}/api/predict`;
+const API_ENDPOINT_DEV = `${import.meta.env.VITE_API_BASE_URL_DEV}/api/predict`;
+
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
@@ -60,7 +63,7 @@ const Upload = () => {
     formData.append('image', selectedFile);
 
     try {
-      const response = await fetch('https://deepvisionv22.vercel.app/api/predict', {
+      const response = await fetch(API_ENDPOINT, {
         method: 'POST',
         body: formData
       });

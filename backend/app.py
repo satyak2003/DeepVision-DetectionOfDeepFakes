@@ -6,7 +6,7 @@ from utils import read_image
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app,origins="https://deep-vision-detection-of-deep-fakes.vercel.app/")
 
 # Path to your saved model
 MODEL_PATH = os.path.join('trained_models', 'deepvision_v1.pth')

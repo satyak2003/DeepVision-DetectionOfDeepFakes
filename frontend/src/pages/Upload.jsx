@@ -60,7 +60,7 @@ const Upload = () => {
     formData.append('image', selectedFile);
 
     try {
-      const response = await fetch('http://deepvisionv22.vercel.app/api/predict', {
+      const response = await fetch('https://deepvisionv22.vercel.app/api/predict', {
         method: 'POST',
         body: formData
       });

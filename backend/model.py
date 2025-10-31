@@ -5,8 +5,11 @@ import torch.nn as nn
 from PIL import Image
 from torch.serialization import safe_globals
 import torchvision.models.resnet
+from memory_profiler import profile
+
 
 class DeepfakeDetector:
+    @profile
     def __init__(self, model_path, device=None):
         self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

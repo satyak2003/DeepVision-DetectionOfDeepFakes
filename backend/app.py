@@ -4,9 +4,11 @@ from flask_cors import CORS
 from model import DeepfakeDetector
 from utils import read_image
 import os
+from memory_profiler import profile
 
 app = Flask(__name__)
-CORS(app,origins="https://deep-vision-detection-of-deep-fakes.vercel.app/")
+CORS(app)
+
 
 # Path to your saved model
 MODEL_PATH = os.path.join('trained_models', 'deepvision_v1.pth')

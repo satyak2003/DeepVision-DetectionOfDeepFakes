@@ -1,6 +1,6 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['builds', 'submit', '--tag', 'gcr.io/$PROJECT_ID/github.com/satyak2003/deepvision-detectionofdeepfakes']
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/github.com/satyak2003/deepvision-detectionofdeepfakes', './backend']
 serviceAccount: 'projects/$PROJECT_ID/serviceAccounts/deepvision-deploy@$PROJECT_ID.iam.gserviceaccount.com'
 options:
   logging: CLOUD_LOGGING_ONLY

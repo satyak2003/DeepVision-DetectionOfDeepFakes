@@ -6,7 +6,7 @@ from utils import read_image
 import os
 # from memory_profiler import profile
 
-vercel_origin = "https://deep-vision-detection-of-deep-fakes.vercel.app/"
+vercel_origin = "https://deep-vision.app"
 gce_origin = "https://deepv-backend-319389573055.asia-south1.run.app:8080"
 
 app = Flask(__name__)

@@ -1,2 +1,6 @@
+steps:
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--tag', 'gcr.io/$PROJECT_ID/github.com/satyak2003/deepvision-detectionofdeepfakes']
+serviceAccount: 'projects/$PROJECT_ID/serviceAccounts/deepvision-deploy@$PROJECT_ID.iam.gserviceaccount.com'
 options:
- defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+  logging: CLOUD_LOGGING_ONLY

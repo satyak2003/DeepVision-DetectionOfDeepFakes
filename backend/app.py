@@ -4,10 +4,17 @@ from flask_cors import CORS
 from model import DeepfakeDetector
 from utils import read_image
 import os
-from memory_profiler import profile
+# from memory_profiler import profile
+
+vercel_origin = "https://deep-vision-detection-of-deep-fakes.vercel.app/"
+gce_origin = "https://deepv-backend-319389573055.asia-south1.run.app"
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={
+    r"/api/*": {
+        "origins": [vercel_origin, gce_origin]
+    }
+})
 
 
 # Path to your saved model

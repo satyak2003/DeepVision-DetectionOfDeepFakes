@@ -1,0 +1,46 @@
+# Byte-compiled / optimized / compiled files
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# Virtual environment
+venv/
+.venv/
+env/
+.env/
+
+# Editor-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+
+# Flask-specific
+instance/  # Flask instance folder for configuration and database files
+*.sqlite3
+*.db
+
+# Configuration files
+.env  # Environment variables for local development
+config.pyc
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
+# Uploaded files (if applicable)
+uploads/
+
+# Build artifacts (if using a build process like Webpack/Gulp for frontend)
+dist/
+build/
+
+# Operating System files
+.DS_Store
+Thumbs.db

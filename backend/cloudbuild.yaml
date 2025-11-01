@@ -1,7 +1,7 @@
 steps:
-- name: 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes'
-  args: ['build', '-t', 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes', 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes/backend']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes']
+- name: 'https://github.com/satyak2003/DeepVision-DetectionOfDeepFakes'
+  args: ['build', '-t', 'https://github.com/satyak2003/DeepVision-DetectionOfDeepFakes', 'https://github.com/satyak2003/DeepVision-DetectionOfDeepFakes/tree/main/backend']
+- name: 'https://github.com/satyak2003/DeepVision-DetectionOfDeepFakes'
+  args: ['push', 'https://github.com/satyak2003/DeepVision-DetectionOfDeepFakes']
 options:
  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET

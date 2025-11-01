@@ -1,5 +1,5 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
+- name: 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes'
   args: ['build', '-t', 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes', 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes/backend']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes']

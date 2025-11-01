@@ -1,7 +1,2 @@
-steps:
-- name: 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes'
-  args: ['build', '-t', 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes', 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes/backend']
-- name: 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes'
-  args: ['push', 'gcr.io/deepvision-deploy/github.com/satyak2003/deepvision-detectionofdeepfakes']
 options:
  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET

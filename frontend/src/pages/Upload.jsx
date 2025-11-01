@@ -63,7 +63,7 @@ const Upload = () => {
     formData.append('image', selectedFile);
 
     try {
-      const response = await fetch(API_ENDPOINT_DEV, {
+      const response = await fetch(API_ENDPOINT, {
         method: 'POST',
         body: formData
       });

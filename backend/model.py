@@ -1,54 +1,59 @@
-from transformers import pipeline
+# backend/model.py
+import torch
+from torchvision import models, transforms
+import torch.nn as nn
 from PIL import Image
+from torch.serialization import safe_globals
+import torchvision.models.resnet
 
-class MultiModelDetector:
-    def __init__(self):
-        print("⏳ Initializing Models...")
-        
-        # Model 1: Best for Deepfakes (Face Swaps, Face2Face)
-        print("  1. Loading Deepfake (Face) Model...")
-        self.face_pipe = pipeline("image-classification", model="dima806/deepfake_vs_real_image_detection")
-        
-        # Model 2: Best for GenAI (DALL-E 3, Midjourney, Stable Diffusion)
-        print("  2. Loading GenAI (Synthetic) Model...")
-        self.genai_pipe = pipeline("image-classification", model="umm-maybe/AI-image-detector")
-        
-        print("✅ Both Models Loaded Successfully!")
 
-    def predict(self, image: Image.Image, model_type: str):
-        # Ensure image is RGB
-        if image.mode != "RGB":
-            image = image.convert("RGB")
+class DeepfakeDetector:
+    def __init__(self, model_path, device=None):
+        self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        # Select the correct pipeline
-        if model_type == 'genai':
-            results = self.genai_pipe(image)
-        else:
-            # Default to deepfake/face model
-            results = self.face_pipe(image)
-            
-        # Parse results (Both models return slightly different label strings)
-        top_result = results[0]
-        raw_label = top_result['label'].lower()
-        score = top_result['score']
+        # Load model architecture (use weights=None instead of pretrained=False)
+        self.model = models.resnet18(weights=None)
+        num_features = self.model.fc.in_features
+        self.model.fc = nn.Linear(num_features, 2)  # 2 classes: Real, Fake
 
-        # NORMALIZE LABELS:
-        # We want to return standard "Deepfake" or "Real" to the frontend
-        
-        final_label = "Real" # Default
-        
-        # Logic for GenAI Model (returns 'artificial', 'human')
-        if model_type == 'genai':
-            if 'artificial' in raw_label or 'ai' in raw_label:
-                final_label = "Deepfake"
-        
-        # Logic for Face Model (returns 'FAKE', 'REAL')
-        else: 
-            if 'fake' in raw_label:
-                final_label = "Deepfake"
+        # Define all classes that need to be allowed during model loading
+        allowed_globals = [
+            torchvision.models.resnet.ResNet,
+            torchvision.models.resnet.BasicBlock,  # This was missing and causing the error
+            torch.nn.modules.conv.Conv2d,
+            torch.nn.modules.batchnorm.BatchNorm2d,
+            torch.nn.modules.linear.Linear,
+            torch.nn.modules.activation.ReLU,
+            torch.nn.modules.container.Sequential,
+            torch.nn.modules.pooling.AdaptiveAvgPool2d,
+            torch.nn.modules.pooling.MaxPool2d,
+            torch.nn.parameter.Parameter,
+            torch.Tensor,
+            torch.nn.Module,
+        ]
 
-        return {
-            "label": final_label,
-            "confidence": score,
-            "used_model": model_type
-        }
+        # Load model weights with safe globals context
+        with safe_globals(allowed_globals):
+            self.model.load_state_dict(torch.load(model_path, map_location=self.device))
+
+        self.model.to(self.device)
+        self.model.eval()
+
+        # Image preprocessing pipeline matching training transforms
+        self.transform = transforms.Compose([
+            transforms.Resize((256, 256)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.5]*3, std=[0.5]*3),
+        ])
+
+        self.labels = ['Deepfake', 'Real']
+
+    def predict(self, image: Image.Image):
+        # Preprocess image
+        input_tensor = self.transform(image).unsqueeze(0).to(self.device)
+
+        with torch.no_grad():
+            output = self.model(input_tensor)
+            _, pred_idx = torch.max(output, 1)
+
+        return self.labels[pred_idx.item()]

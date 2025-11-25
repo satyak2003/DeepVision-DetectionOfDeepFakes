@@ -1,25 +1,18 @@
-# backend/app.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from model import DeepfakeDetector
-from utils import read_image
-import os
-# from memory_profiler import profile
-
-vercel_origin = "https://deep-vision.app"
-gce_origin = "https://deepv-backend-319389573055.asia-south1.run.app:8080"
+from model import MultiModelDetector
+from PIL import Image
 
 app = Flask(__name__)
+
 CORS(app, resources={
-    r"*/api/*": {
-        "origins": [vercel_origin, gce_origin]
+    r"/api/*": {
+        "origins": ["*"] 
     }
 })
 
-
-# Path to your saved model
-MODEL_PATH = os.path.join('trained_models', 'deepvision_v1.pth')
-detector = DeepfakeDetector(MODEL_PATH)
+# Initialize the Multi-Model Detector
+detector = MultiModelDetector()
 
 @app.route('/api/predict', methods=['POST'])
 def predict():
@@ -27,18 +20,20 @@ def predict():
         return jsonify({'error': 'No image uploaded'}), 400
 
     file = request.files['image']
-    if file.filename == '':
-        return jsonify({'error': 'Empty filename'}), 400
+    # Get the model selection from the form data (default to 'deepfake')
+    model_type = request.form.get('model_type', 'deepfake')
 
     try:
-        image = read_image(file)
-        label = detector.predict(image)
-        return jsonify({'prediction': label})
+        image = Image.open(file.stream)
+        
+        # Pass both image and choice to the detector
+        result = detector.predict(image, model_type)
+        
+        return jsonify(result)
 
     except Exception as e:
+        print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
 
-
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=7860, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

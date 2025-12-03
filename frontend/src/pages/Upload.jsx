@@ -4,7 +4,8 @@ import {
   CheckCircleIcon, 
   ExclamationTriangleIcon,
   CpuChipIcon,
-  FaceSmileIcon
+  FaceSmileIcon,
+  EyeIcon
 } from "@heroicons/react/24/outline";
 
 const API_ENDPOINT = "http://127.0.0.1:5000/api/predict";
@@ -12,222 +13,152 @@ const API_ENDPOINT = "http://127.0.0.1:5000/api/predict";
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
-  const [aiDetected, setAiDetected] = useState(null);
-  const [confidence, setConfidence] = useState(null);
-  const [modelType, setModelType] = useState("deepfake"); // Default selection
+  const [results, setResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [dragActive, setDragActive] = useState(false);
-
   const inputRef = useRef(null);
 
   const resetState = () => {
     setSelectedFile(null);
     setPreviewURL(null);
-    setAiDetected(null);
-    setConfidence(null);
-    setErrorMessage('');
-  };
-
-  const handleFileChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      processFile(event.target.files[0]);
-    }
+    setResults(null);
   };
 
   const processFile = (file) => {
     if (file && file.type.startsWith("image/")) {
       setSelectedFile(file);
       setPreviewURL(URL.createObjectURL(file));
-      setAiDetected(null); // Reset results when new image is picked
+      setResults(null);
     } else {
       alert("Please select a valid image file.");
     }
   };
-
-  const handleDrag = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") setDragActive(true);
-    if (e.type === "dragleave") setDragActive(false);
-  }, []);
-
-  const handleDrop = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      processFile(e.dataTransfer.files[0]);
-    }
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!selectedFile) return;
 
     setIsLoading(true);
-    setErrorMessage('');
-
     const formData = new FormData();
     formData.append('image', selectedFile);
-    // Send the selected model type to backend
-    formData.append('model_type', modelType);
 
     try {
-      const response = await fetch(API_ENDPOINT, {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) throw new Error(`Server Error: ${response.statusText}`);
-
+      const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData });
       const data = await response.json();
-      
-      const isFake = data.label === 'Deepfake';
-      setAiDetected(isFake);
-      setConfidence(data.confidence ? Math.round(data.confidence * 100) : null);
-
+      setResults(data);
     } catch (error) {
       console.error('Error:', error);
-      setErrorMessage("Failed to connect to the server.");
+      alert("Failed to connect to backend");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleDrag = useCallback((e) => { e.preventDefault(); e.stopPropagation(); setDragActive(e.type === "dragenter" || e.type === "dragover"); }, []);
+  const handleDrop = useCallback((e) => { e.preventDefault(); e.stopPropagation(); setDragActive(false); if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]); }, []);
+
   return (
     <div className="flex min-h-screen justify-center px-4 pt-[80px] pb-12 bg-gradient-to-br from-slate-900 to-slate-800 items-start font-sans">
-      <div className="w-full max-w-xl rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
+      <div className="w-full max-w-4xl rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
         
         <header className="mb-8 text-center">
           <h2 className="flex items-center justify-center text-3xl font-bold tracking-tight text-white">
             <CloudArrowUpIcon className="h-8 w-8 mr-3 text-blue-400" />
-            DeepVision
+            DeepVision Dual-Scan
           </h2>
-          <p className="mt-3 text-slate-400 text-sm">
-            Advanced AI Detection System
-          </p>
+          <p className="mt-2 text-slate-400 text-sm">Visualizing AI Perception & Detection</p>
         </header>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          
-          {/* --- MODEL SELECTION DROPDOWN --- */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div 
-              onClick={() => setModelType("deepfake")}
-              className={`cursor-pointer rounded-xl border p-4 transition-all duration-200 flex items-center
-                ${modelType === "deepfake" 
-                  ? "bg-blue-600/20 border-blue-500" 
-                  : "bg-white/5 border-white/10 hover:bg-white/10"}
-              `}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* LEFT COLUMN: UPLOAD */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div
+              onDragEnter={handleDrag} onDragOver={handleDrag} onDragLeave={handleDrag} onDrop={handleDrop}
+              onClick={() => inputRef.current?.click()}
+              className={`cursor-pointer rounded-xl border-2 border-dashed px-6 py-10 text-center transition-all ${dragActive ? "border-blue-500 bg-blue-500/10" : "border-slate-600 hover:border-slate-500 hover:bg-white/5"}`}
             >
-              <FaceSmileIcon className={`h-8 w-8 mr-3 ${modelType === "deepfake" ? "text-blue-400" : "text-slate-500"}`}/>
-              <div>
-                <h3 className="text-white font-semibold text-sm">Face Manipulation</h3>
-                <p className="text-xs text-slate-400">Best for Deepfakes & Swaps</p>
-              </div>
+              <input ref={inputRef} type="file" accept="image/*" onChange={(e) => processFile(e.target.files[0])} className="hidden"/>
+              {!previewURL ? (
+                <div className="text-slate-400">Click or Drag Image Here</div>
+              ) : (
+                <img src={previewURL} alt="Original" className="mx-auto max-h-64 rounded-lg shadow-lg object-contain" />
+              )}
             </div>
 
-            <div 
-              onClick={() => setModelType("genai")}
-              className={`cursor-pointer rounded-xl border p-4 transition-all duration-200 flex items-center
-                ${modelType === "genai" 
-                  ? "bg-purple-600/20 border-purple-500" 
-                  : "bg-white/5 border-white/10 hover:bg-white/10"}
-              `}
-            >
-              <CpuChipIcon className={`h-8 w-8 mr-3 ${modelType === "genai" ? "text-purple-400" : "text-slate-500"}`}/>
-              <div>
-                <h3 className="text-white font-semibold text-sm">Generative AI</h3>
-                <p className="text-xs text-slate-400">Best for Midjourney/DALL-E</p>
-              </div>
-            </div>
-          </div>
-          
-          {/* Upload Area */}
-          <div
-            onDragEnter={handleDrag}
-            onDragOver={handleDrag}
-            onDragLeave={handleDrag}
-            onDrop={handleDrop}
-            onClick={() => inputRef.current?.click()}
-            className={`relative cursor-pointer rounded-xl border-2 border-dashed px-6 py-12 text-center transition-all duration-200 ease-in-out
-              ${dragActive 
-                ? "border-blue-500 bg-blue-500/10" 
-                : "border-slate-600 hover:border-slate-500 hover:bg-white/5"
-              }
-            `}
-          >
-            <input ref={inputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden"/>
-            
-            {!previewURL ? (
-              <>
-                <CloudArrowUpIcon className="mx-auto h-12 w-12 text-slate-500" />
-                <p className="mt-4 text-sm text-slate-300 font-medium">
-                  <span className="text-blue-400">Click to upload</span> or drag and drop
-                </p>
-              </>
-            ) : (
-              <div className="relative">
-                <img src={previewURL} alt="Preview" className="mx-auto max-h-64 rounded-lg shadow-lg" />
-                <button
-                  type="button"
-                  onClick={(e) => { e.stopPropagation(); resetState(); }}
-                  className="absolute -top-3 -right-3 rounded-full bg-red-500 p-1.5 text-white shadow-md hover:bg-red-600"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                    <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                  </svg>
-                </button>
+            <button type="submit" disabled={!selectedFile || isLoading} className="w-full rounded-xl py-3.5 font-semibold text-white bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 transition">
+              {isLoading ? "Analyzing..." : "Scan Image"}
+            </button>
+          </form>
+
+          {/* RIGHT COLUMN: RESULTS */}
+          <div className="space-y-4">
+            {!results && !isLoading && (
+              <div className="h-full flex items-center justify-center text-slate-500 border border-white/5 rounded-xl bg-white/5">
+                <p>Results will appear here</p>
               </div>
             )}
-          </div>
 
-          {/* Detect Button */}
-          <button
-            type="submit"
-            disabled={!selectedFile || isLoading}
-            className={`w-full rounded-xl py-3.5 font-semibold text-white shadow-lg transition-all duration-200
-              ${!selectedFile || isLoading
-                ? "bg-slate-700 text-slate-400 cursor-not-allowed"
-                : modelType === 'deepfake' 
-                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500"
-                  : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500"
-              }
-            `}
-          >
-            {isLoading ? "Running Analysis..." : `Detect with ${modelType === 'deepfake' ? 'Deepfake' : 'GenAI'} Model`}
-          </button>
-        </form>
+            {isLoading && (
+              <div className="h-full flex flex-col items-center justify-center text-blue-400 space-y-4">
+                <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+                <p>Extracting Faces & Analyzing Artifacts...</p>
+              </div>
+            )}
 
-        {/* Results */}
-        {aiDetected !== null && (
-          <div className={`mt-8 overflow-hidden rounded-2xl border backdrop-blur-md transition-all duration-500
-            ${aiDetected ? "bg-red-500/10 border-red-500/30" : "bg-green-500/10 border-green-500/30"}`}
-          >
-            <div className="p-6 text-center">
-              {aiDetected ? (
-                <ExclamationTriangleIcon className="mx-auto h-12 w-12 text-red-500 mb-3" />
-              ) : (
-                <CheckCircleIcon className="mx-auto h-12 w-12 text-green-500 mb-3" />
-              )}
-              
-              <h3 className={`text-2xl font-bold ${aiDetected ? "text-red-400" : "text-green-400"}`}>
-                {aiDetected ? "FAKE DETECTED" : "REAL IMAGE"}
-              </h3>
-              
-              {confidence && (
-                <div className="mt-4 inline-flex items-center rounded-full bg-white/5 px-4 py-1 border border-white/10">
-                  <span className="text-sm text-slate-300 mr-2">Confidence:</span>
-                  <span className={`font-bold ${aiDetected ? "text-red-400" : "text-green-400"}`}>{confidence}%</span>
+            {results && !results.error && (
+              <>
+                {/* FINAL VERDICT */}
+                <div className={`p-4 rounded-xl text-center border ${results.final_verdict.includes("Real") ? "bg-green-500/20 border-green-500" : "bg-red-500/20 border-red-500"}`}>
+                  <h2 className="text-2xl font-extrabold text-white">{results.final_verdict}</h2>
                 </div>
-              )}
-            </div>
+
+                {/* DEBUG VIEW: WHAT AI SAW */}
+                {results.debug_image && (
+                  <div className="bg-black/40 p-4 rounded-xl border border-white/10 flex items-center space-x-4">
+                    <div className="relative group">
+                        <img 
+                          src={`data:image/jpeg;base64,${results.debug_image}`} 
+                          alt="AI Input" 
+                          className="h-24 w-24 rounded-lg border border-slate-500 object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                            <span className="text-xs text-white">224x224 Input</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 className="text-white font-bold flex items-center text-sm">
+                            <EyeIcon className="h-4 w-4 mr-2 text-blue-400"/>
+                            AI Vision Input
+                        </h4>
+                        <p className="text-xs text-slate-400 mt-1">
+                            This is the exact cropped region the Deepfake Model analyzed.
+                        </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* METRICS GRID */}
+                <div className="grid grid-cols-2 gap-3">
+                    <div className={`p-3 rounded-lg border ${results.genai_analysis.is_detected ? "bg-purple-500/10 border-purple-500/50" : "bg-slate-700/30 border-slate-600"}`}>
+                        <div className="flex items-center mb-1">
+                            <CpuChipIcon className="h-4 w-4 mr-2 text-slate-300"/>
+                            <span className="text-xs font-bold text-slate-200">GenAI Score</span>
+                        </div>
+                        <span className="text-lg font-mono text-white">{Math.round(results.genai_analysis.confidence * 100)}%</span>
+                    </div>
+
+                    <div className={`p-3 rounded-lg border ${results.deepfake_analysis.is_detected ? "bg-red-500/10 border-red-500/50" : "bg-slate-700/30 border-slate-600"}`}>
+                        <div className="flex items-center mb-1">
+                            <FaceSmileIcon className="h-4 w-4 mr-2 text-slate-300"/>
+                            <span className="text-xs font-bold text-slate-200">Deepfake Score</span>
+                        </div>
+                        <span className="text-lg font-mono text-white">{Math.round(results.deepfake_analysis.confidence * 100)}%</span>
+                    </div>
+                </div>
+              </>
+            )}
           </div>
-        )}
-
-        {errorMessage && <p className="mt-4 text-center text-red-400 text-sm">{errorMessage}</p>}
-
+        </div>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import {
   EyeIcon
 } from "@heroicons/react/24/outline";
 
-const API_ENDPOINT = "http://127.0.0.1:5000/api/predict";
+const API_ENDPOINT = "https://api.render.com/deploy/srv-d3drnrr7mgec73d4r520?key=SjanJSUm1LM";
 
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);

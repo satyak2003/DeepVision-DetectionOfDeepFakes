@@ -64,7 +64,7 @@ const Upload = () => {
         <header className="mb-8 text-center">
           <h2 className="flex items-center justify-center text-3xl font-bold tracking-tight text-white">
             <CloudArrowUpIcon className="h-8 w-8 mr-3 text-blue-400" />
-            DeepVision Dual-Scan
+            DeepVision Deep Scan
           </h2>
           <p className="mt-2 text-slate-400 text-sm">Visualizing AI Perception & Detection</p>
         </header>

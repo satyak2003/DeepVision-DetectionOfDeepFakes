@@ -11,54 +11,54 @@ const Demo = () => {
   const demoImages = [
     {
       id: 1,
-      name: "Fake Sample 1",
-      url: "/images/fake_10032.jpg",
-      type: "fake",
-      result: {
-        overall_prediction: "fake",
-        confidence: 0.96,
-        fake_probability: 0.96,
-        real_probability: 0.04,
-        analysis: "AI-generated facial cues detected. Unnatural blending and subtle digital artifacts reveal high likelihood of manipulation."
-      }
-    },
-    {
-      id: 2,
-      name: "Fake Sample 2",
-      url: "/images/fake_10069.jpg",
-      type: "fake",
-      result: {
-        overall_prediction: "fake",
-        confidence: 0.93,
-        fake_probability: 0.93,
-        real_probability: 0.07,
-        analysis: "Detected signs of digital alteration: inconsistent skin texture and atypical illumination suggest synthesized content."
-      }
-    },
-    {
-      id: 3,
       name: "Real Sample 1",
-      url: "/images/real_10005.jpg",
+      url: "/images/fake_10032.jpg",
       type: "real",
       result: {
         overall_prediction: "real",
-        confidence: 0.90,
-        fake_probability: 0.10,
-        real_probability: 0.90,
+        confidence: 0.96,
+        fake_probability: 0.96,
+        real_probability: 0.04,
         analysis: "No manipulation artifacts found. Skin patterns, lighting, and features consistent with authentic photography."
       }
     },
     {
-      id: 4,
+      id: 2,
       name: "Real Sample 2",
-      url: "/images/real_10008.jpg",
+      url: "/images/fake_10069.jpg",
       type: "real",
       result: {
         overall_prediction: "real",
+        confidence: 0.93,
+        fake_probability: 0.93,
+        real_probability: 0.07,
+        analysis: "No manipulation artifacts found. Skin patterns, lighting, and features consistent with authentic photography."
+      }
+    },
+    {
+      id: 3,
+      name: "Fake Sample 1",
+      url: "/images/real_10005.jpg",
+      type: "fake",
+      result: {
+        overall_prediction: "fake",
+        confidence: 0.90,
+        fake_probability: 0.90,
+        real_probability: 0.10,
+        analysis: "Detected signs of digital alteration: inconsistent skin texture and atypical illumination suggest synthesized content."
+      }
+    },
+    {
+      id: 4,
+      name: "Fake Sample 2",
+      url: "/images/fake_img.png",
+      type: "fake",
+      result: {
+        overall_prediction: "fake",
         confidence: 0.92,
-        fake_probability: 0.08,
-        real_probability: 0.92,
-        analysis: "High confidence in authenticity. No digital tampering detected; all facial characteristics are natural."
+        fake_probability: 0.92,
+        real_probability: 0.08,
+        analysis: "AI-generated facial cues detected. Unnatural blending and subtle digital artifacts reveal high likelihood of manipulation."
       }
     }
   ]

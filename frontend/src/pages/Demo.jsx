@@ -17,8 +17,8 @@ const Demo = () => {
       result: {
         overall_prediction: "real",
         confidence: 0.96,
-        fake_probability: 0.96,
-        real_probability: 0.04,
+        fake_probability: 0.06,
+        real_probability: 0.94,
         analysis: "No manipulation artifacts found. Skin patterns, lighting, and features consistent with authentic photography."
       }
     },
@@ -30,8 +30,8 @@ const Demo = () => {
       result: {
         overall_prediction: "real",
         confidence: 0.93,
-        fake_probability: 0.93,
-        real_probability: 0.07,
+        fake_probability: 0.09,
+        real_probability: 0.87,
         analysis: "No manipulation artifacts found. Skin patterns, lighting, and features consistent with authentic photography."
       }
     },

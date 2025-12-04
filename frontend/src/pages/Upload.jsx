@@ -8,7 +8,7 @@ import {
   EyeIcon
 } from "@heroicons/react/24/outline";
 
-const API_ENDPOINT = "https://carloss203-deepvision-backend.hf.space";
+const API_ENDPOINT = "https://carloss203-deepvision-backend.hf.space/api/predict";
 
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
